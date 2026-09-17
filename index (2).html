@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenerasi.id — Pendukung Ambisi Kamu</title>
+<meta name="description" content="Platform digital untuk persiapan karir, skill profesional, AI, dan pengembangan diri. Mulai dari Rp20.000.">
+<meta property="og:title" content="Zenerasi.id — Pendukung Ambisi Kamu">
+<meta property="og:description" content="Upgrade skill, bangun personal brand, siapkan masa depanmu.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23FF6A2B'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   TOKENS
+   ═══════════════════════════════════════════════════ */
+:root{
+  /* surface */
+  --bg:#08080A;
+  --bg-raise:#0D0D10;
+  --bg-card:#101013;
+  --hair:rgba(255,255,255,0.09);
+  --hair-soft:rgba(255,255,255,0.055);
+
+  /* text */
+  --fg:#EDEDEF;
+  --fg-2:#9A9AA2;
+  --fg-3:#6B6B74;
+
+  /* accent — satu-satunya warna di luar orb */
+  --accent:#FF6A2B;
+  --accent-soft:rgba(255,106,43,0.12);
+
+  /* type scale — rasio 1.25, tracking mengetat seiring ukuran */
+  --t-display:clamp(2.75rem,6.2vw,5rem);
+  --t-h2:clamp(1.9rem,3.4vw,2.75rem);
+  --t-h3:1.0625rem;
+  --t-body:1rem;
+  --t-sm:0.875rem;
+  --t-xs:0.75rem;
+
+  /* spasi — kelipatan 4 */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+
+  --gutter:24px;
+  --maxw:1160px;
+  --radius:14px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+/* ═══════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:var(--t-body);
+  line-height:1.6;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{margin:0;font-weight:500;line-height:1.12;letter-spacing:-0.022em;}
+h1{letter-spacing:-0.04em;}
+h2{letter-spacing:-0.032em;}
+p{margin:0;}
+a{color:inherit;text-decoration:none;}
+ul{margin:0;padding:0;list-style:none;}
+button{font-family:inherit;}
+::selection{background:var(--accent);color:#120600;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px;}
+
+/* butiran halus supaya gradasi tidak bergaris */
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);}
+.section{padding:var(--sp-9) 0;position:relative;z-index:2;}
+.section--tight{padding:var(--sp-8) 0;}
+
+/* ═══════════════════════════════════════════════════
+   TIPOGRAFI UTILITAS
+   ═══════════════════════════════════════════════════ */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:var(--sp-2);
+  font-size:var(--t-xs);letter-spacing:0.02em;color:var(--fg-3);
+}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--accent);}
+.lede{font-size:clamp(1.0625rem,1.5vw,1.1875rem);line-height:1.55;color:var(--fg-2);letter-spacing:-0.012em;}
+.muted{color:var(--fg-2);}
+.small{font-size:var(--t-sm);}
+.measure{max-width:56ch;}
+.measure-tight{max-width:44ch;}
+
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,26rem);gap:var(--sp-7);align-items:end;}
+.head h2{font-size:var(--t-h2);margin-top:var(--sp-4);}
+.head p{font-size:var(--t-sm);color:var(--fg-2);line-height:1.65;}
+
+/* ═══════════════════════════════════════════════════
+   TOMBOL
+   ═══════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  height:46px;padding:0 var(--sp-6);
+  border-radius:999px;border:1px solid transparent;
+  font-size:var(--t-sm);font-weight:500;letter-spacing:-0.006em;
+  cursor:pointer;white-space:nowrap;
+  transition:background-color .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease),transform .3s var(--ease);
+}
+.btn:hover{transform:translateY(-1px);}
+.btn--solid{background:var(--accent);color:#140600;}
+.btn--solid:hover{background:#FF7F49;}
+.btn--line{border-color:var(--hair);color:var(--fg);}
+.btn--line:hover{border-color:rgba(255,255,255,0.28);background:rgba(255,255,255,0.03);}
+.btn--wa{background:#25D366;color:#03230E;}
+.btn--wa:hover{background:#31E074;}
+.btn-row{display:flex;flex-wrap:wrap;gap:var(--sp-3);}
+.btn .arw{transition:transform .3s var(--ease);}
+.btn:hover .arw{transform:translateX(3px);}
+
+/* ═══════════════════════════════════════════════════
+   NAVIGASI
+   ═══════════════════════════════════════════════════ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  border-bottom:1px solid transparent;
+  transition:background-color .4s var(--ease),border-color .4s var(--ease),backdrop-filter .4s var(--ease);
+}
+.nav.is-stuck{
+  background:rgba(8,8,10,0.72);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom-color:var(--hair-soft);
+}
+.nav__inner{
+  height:72px;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-5);
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);
+}
+.brand{display:inline-flex;align-items:center;gap:10px;font-size:0.9375rem;font-weight:500;letter-spacing:-0.02em;}
+.brand__dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(255,106,43,.75);}
+.nav__links{display:flex;gap:var(--sp-7);}
+.nav__links a{font-size:var(--t-sm);color:var(--fg-2);transition:color .25s var(--ease);}
+.nav__links a:hover{color:var(--fg);}
+.nav__right{display:flex;align-items:center;gap:var(--sp-4);}
+.nav .btn{height:38px;padding:0 var(--sp-5);}
+
+.burger{display:none;width:40px;height:40px;align-items:center;justify-content:center;
+  background:none;border:1px solid var(--hair);border-radius:10px;cursor:pointer;padding:0;}
+.burger i{display:block;width:16px;height:1px;background:var(--fg);position:relative;}
+.burger i::before,.burger i::after{content:'';position:absolute;left:0;width:16px;height:1px;background:var(--fg);}
+.burger i::before{top:-5px;} .burger i::after{top:5px;}
+
+.drawer{
+  position:fixed;inset:0 0 0 auto;width:min(320px,86vw);z-index:70;
+  background:#0A0A0D;border-left:1px solid var(--hair-soft);
+  transform:translateX(100%);transition:transform .45s var(--ease);
+  padding:var(--sp-5);display:flex;flex-direction:column;
+}
+.drawer.is-open{transform:none;}
+.drawer a{padding:var(--sp-4) 0;border-bottom:1px solid var(--hair-soft);font-size:1.0625rem;}
+.drawer .btn{margin-top:var(--sp-6);}
+.drawer__close{align-self:flex-end;width:40px;height:40px;border-radius:10px;background:none;
+  border:1px solid var(--hair);color:var(--fg);font-size:1.1rem;cursor:pointer;margin-bottom:var(--sp-4);}
+.scrim{position:fixed;inset:0;background:rgba(5,5,7,.7);opacity:0;pointer-events:none;transition:opacity .35s var(--ease);z-index:60;}
+.scrim.is-open{opacity:1;pointer-events:auto;}
+
+/* ═══════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════ */
+.hero{padding:calc(72px + var(--sp-9)) 0 var(--sp-9);position:relative;z-index:2;}
+.hero__grid{
+  display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  gap:var(--sp-8);align-items:center;
+}
+.hero h1{font-size:var(--t-display);}
+.hero h1 em{font-style:normal;color:var(--fg-3);}
+.hero .lede{margin-top:var(--sp-5);max-width:38ch;}
+.hero .btn-row{margin-top:var(--sp-7);}
+
+.figures{
+  display:flex;flex-wrap:wrap;margin-top:var(--sp-8);
+  border-top:1px solid var(--hair-soft);
+}
+.figure{padding:var(--sp-5) var(--sp-6) 0 0;margin-right:var(--sp-6);position:relative;}
+.figure + .figure{border-left:1px solid var(--hair-soft);padding-left:var(--sp-6);}
+.figure__n{font-size:1.5rem;font-weight:500;letter-spacing:-0.035em;line-height:1;}
+.figure__l{font-size:var(--t-xs);color:var(--fg-3);margin-top:var(--sp-2);}
+
+/* orb */
+.stage{position:relative;aspect-ratio:1;width:100%;max-width:460px;margin-inline:auto;}
+.stage canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  border-radius:52% 48% 44% 56% / 50% 54% 46% 50%;
+  animation:drift 26s ease-in-out infinite;
+  -webkit-mask-image:radial-gradient(closest-side,#000 68%,transparent 99%);
+  mask-image:radial-gradient(closest-side,#000 68%,transparent 99%);
+}
+.stage::after{ /* halo tipis di belakang orb */
+  content:'';position:absolute;inset:-14%;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(255,106,43,.10),transparent 62%);
+}
+@keyframes drift{
+  0%,100%{border-radius:52% 48% 44% 56% / 50% 54% 46% 50%;transform:rotate(0) scale(1);}
+  50%    {border-radius:45% 55% 56% 44% / 56% 46% 54% 44%;transform:rotate(8deg) scale(1.03);}
+}
+
+/* ═══════════════════════════════════════════════════
+   PITA BIDANG
+   ═══════════════════════════════════════════════════ */
+.band{border-top:1px solid var(--hair-soft);border-bottom:1px solid var(--hair-soft);}
+.band__inner{display:grid;grid-template-columns:repeat(4,1fr);}
+.band__cell{padding:var(--sp-6) var(--sp-5);border-left:1px solid var(--hair-soft);}
+.band__cell:first-child{border-left:0;padding-left:0;}
+.band__cell h3{font-size:var(--t-h3);}
+.band__cell p{font-size:var(--t-sm);color:var(--fg-3);margin-top:var(--sp-2);line-height:1.55;}
+.band__cell .k{font-size:var(--t-xs);color:var(--accent);letter-spacing:0.04em;}
+
+/* ═══════════════════════════════════════════════════
+   LAYANAN
+   ═══════════════════════════════════════════════════ */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3);margin-top:var(--sp-8);}
+.card{
+  position:relative;display:flex;flex-direction:column;
+  background:var(--bg-card);border:1px solid var(--hair-soft);border-radius:var(--radius);
+  padding:var(--sp-6);
+  transition:border-color .35s var(--ease),background-color .35s var(--ease),transform .35s var(--ease);
+}
+.card:hover{border-color:rgba(255,255,255,0.16);background:#131317;transform:translateY(-3px);}
+.card__top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4);}
+.card__idx{font-size:var(--t-xs);color:var(--fg-3);font-variant-numeric:tabular-nums;}
+.card h3{font-size:var(--t-h3);margin-top:var(--sp-5);}
+.card__desc{font-size:var(--t-sm);color:var(--fg-2);margin-top:var(--sp-3);line-height:1.6;min-height:3.2em;}
+.card__foot{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);
+  margin-top:var(--sp-6);padding-top:var(--sp-5);border-top:1px solid var(--hair-soft);
+}
+.card__price{font-size:1.125rem;font-weight:500;letter-spacing:-0.025em;font-variant-numeric:tabular-nums;}
+.card__price.is-free{color:var(--accent);}
+.card__link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:var(--t-sm);color:var(--fg-2);
+  transition:color .25s var(--ease);
+}
+.card:hover .card__link{color:var(--accent);}
+.card__link .arw{transition:transform .3s var(--ease);}
+.card:hover .card__link .arw{transform:translateX(3px);}
+
+/* ═══════════════════════════════════════════════════
+   KEUNGGULAN — daftar garis rambut
+   ═══════════════════════════════════════════════════ */
+.rows{margin-top:var(--sp-8);border-top:1px solid var(--hair-soft);}
+.row{
+  display:grid;grid-template-columns:3.5rem minmax(0,15rem) minmax(0,1fr);
+  gap:var(--sp-5);align-items:start;
+  padding:var(--sp-6) 0;border-bottom:1px solid var(--hair-soft);
+  transition:background-color .35s var(--ease);
+}
+.row:hover{background:rgba(255,255,255,0.016);}
+.row__k{font-size:var(--t-xs);color:var(--fg-3);font-variant-numeric:tabular-nums;padding-top:4px;}
+.row h3{font-size:var(--t-h3);}
+.row p{font-size:var(--t-sm);color:var(--fg-2);line-height:1.7;}
+
+/* ═══════════════════════════════════════════════════
+   CARA KERJA
+   ═══════════════════════════════════════════════════ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-3);margin-top:var(--sp-8);}
+.step{border:1px solid var(--hair-soft);border-radius:var(--radius);padding:var(--sp-6);background:var(--bg-raise);}
+.step__n{
+  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--hair);font-size:var(--t-xs);color:var(--accent);margin-bottom:var(--sp-5);
+}
+.step h3{font-size:var(--t-h3);}
+.step p{font-size:var(--t-sm);color:var(--fg-2);margin-top:var(--sp-2);line-height:1.6;}
+
+/* ═══════════════════════════════════════════════════
+   TESTIMONI
+   ═══════════════════════════════════════════════════ */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3);margin-top:var(--sp-8);}
+.quote{border:1px solid var(--hair-soft);border-radius:var(--radius);padding:var(--sp-6);background:var(--bg-card);}
+.quote__stars{color:var(--accent);font-size:var(--t-xs);letter-spacing:2px;}
+.quote p{font-size:var(--t-sm);color:var(--fg-2);line-height:1.75;margin-top:var(--sp-4);}
+.quote__who{display:flex;align-items:center;gap:var(--sp-3);margin-top:var(--sp-6);padding-top:var(--sp-5);border-top:1px solid var(--hair-soft);}
+.quote__av{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid var(--hair);
+  display:flex;align-items:center;justify-content:center;font-size:var(--t-xs);color:var(--fg-3);}
+.quote__nm{font-size:var(--t-sm);}
+.quote__sv{font-size:var(--t-xs);color:var(--fg-3);}
+
+/* ═══════════════════════════════════════════════════
+   CTA PENUTUP
+   ═══════════════════════════════════════════════════ */
+.cta{position:relative;overflow:hidden;border-top:1px solid var(--hair-soft);}
+.cta__glow{position:absolute;left:50%;top:100%;transform:translate(-50%,-50%);
+  width:min(780px,110vw);height:min(780px,110vw);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,106,43,.14),transparent 60%);}
+.cta__inner{position:relative;z-index:2;text-align:center;padding:var(--sp-10) 0;}
+.cta h2{font-size:var(--t-h2);max-width:17ch;margin:var(--sp-4) auto 0;}
+.cta .lede{margin:var(--sp-5) auto 0;max-width:42ch;}
+.cta .btn-row{justify-content:center;margin-top:var(--sp-7);}
+.cta .eyebrow{justify-content:center;}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════ */
+.foot{border-top:1px solid var(--hair-soft);padding:var(--sp-8) 0 var(--sp-6);position:relative;z-index:2;}
+.foot__top{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--sp-7);align-items:start;}
+.foot__tag{font-size:var(--t-sm);color:var(--fg-3);margin-top:var(--sp-3);max-width:28ch;line-height:1.6;}
+.foot__col h4{font-size:var(--t-xs);color:var(--fg-3);font-weight:400;letter-spacing:0.04em;margin-bottom:var(--sp-4);}
+.foot__col a{display:block;font-size:var(--t-sm);color:var(--fg-2);padding:3px 0;transition:color .25s var(--ease);}
+.foot__col a:hover{color:var(--fg);}
+.foot__bar{display:flex;justify-content:space-between;gap:var(--sp-4);flex-wrap:wrap;
+  margin-top:var(--sp-8);padding-top:var(--sp-5);border-top:1px solid var(--hair-soft);
+  font-size:var(--t-xs);color:var(--fg-3);}
+
+/* ═══════════════════════════════════════════════════
+   REVEAL
+   ═══════════════════════════════════════════════════ */
+[data-rv]{opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+[data-rv].is-in{opacity:1;transform:none;}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIF
+   ═══════════════════════════════════════════════════ */
+@media (max-width:1000px){
+  .nav__links{display:none;}
+  .nav .btn{display:none;}
+  .burger{display:flex;}
+  .hero__grid{grid-template-columns:1fr;gap:var(--sp-8);}
+  .stage{max-width:340px;order:-1;}
+  .head{grid-template-columns:1fr;gap:var(--sp-5);align-items:start;}
+  .cards{grid-template-columns:repeat(2,1fr);}
+  .steps{grid-template-columns:repeat(2,1fr);}
+  .quotes{grid-template-columns:1fr;}
+  .band__inner{grid-template-columns:repeat(2,1fr);}
+  .band__cell{border-left:0;border-top:1px solid var(--hair-soft);padding-left:0;padding-right:var(--sp-5);}
+  .band__cell:nth-child(1),.band__cell:nth-child(2){border-top:0;}
+  .foot__top{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:640px){
+  :root{--gutter:20px;}
+  .section{padding:var(--sp-8) 0;}
+  .hero{padding:calc(72px + var(--sp-7)) 0 var(--sp-8);}
+  .cards{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr;}
+  .band__inner{grid-template-columns:1fr;}
+  .band__cell{border-top:1px solid var(--hair-soft);padding:var(--sp-5) 0;}
+  .band__cell:nth-child(2){border-top:1px solid var(--hair-soft);}
+  .row{grid-template-columns:2.5rem 1fr;gap:var(--sp-3) var(--sp-4);}
+  .row p{grid-column:2;}
+  .figures{gap:0;}
+  .figure{padding-right:var(--sp-5);margin-right:var(--sp-5);}
+  .btn{width:100%;}
+  .btn-row{gap:var(--sp-2);}
+  .foot__top{grid-template-columns:1fr;gap:var(--sp-6);}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+  [data-rv]{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAVIGASI ══════════════ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top"><span class="brand__dot"></span>Zenerasi.id</a>
+    <nav class="nav__links" aria-label="Navigasi utama">
+      <a href="#layanan">Layanan</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#cara-kerja">Cara kerja</a>
+      <a href="#kontak">Kontak</a>
+    </nav>
+    <div class="nav__right">
+      <a class="btn btn--solid" href="https://wa.me/6285196126995" target="_blank" rel="noopener">Mulai sekarang</a>
+      <button class="burger" id="burger" aria-label="Buka menu" aria-expanded="false" aria-controls="drawer"><i></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Menu">
+  <button class="drawer__close" id="drawerClose" aria-label="Tutup menu">&times;</button>
+  <a href="#layanan">Layanan</a>
+  <a href="#tentang">Tentang</a>
+  <a href="#cara-kerja">Cara kerja</a>
+  <a href="#kontak">Kontak</a>
+  <a class="btn btn--solid" href="https://wa.me/6285196126995" target="_blank" rel="noopener">Mulai sekarang</a>
+</aside>
+
+<main id="top">
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <span class="eyebrow">Karir · Skill · AI untuk Gen Z</span>
+      <h1 style="margin-top:var(--sp-5)">Pendukung<br>ambisi <em>kamu.</em></h1>
+      <p class="lede">Upgrade skill, bangun personal brand, dan siapkan dirimu menghadapi dunia profesional — mulai dari Rp20.000.</p>
+
+      <div class="btn-row">
+        <a class="btn btn--solid" href="https://wa.me/6285196126995" target="_blank" rel="noopener">Mulai sekarang <span class="arw">→</span></a>
+        <a class="btn btn--line" href="#layanan">Lihat layanan</a>
+      </div>
+
+      <div class="figures">
+        <div class="figure"><div class="figure__n">9</div><div class="figure__l">Layanan siap pakai</div></div>
+        <div class="figure"><div class="figure__n">Rp20rb</div><div class="figure__l">Harga mulai dari</div></div>
+        <div class="figure"><div class="figure__n">Gratis</div><div class="figure__l">Konsultasi awal</div></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <canvas id="orb" aria-hidden="true"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PITA BIDANG ══════════════ -->
+<section class="band" id="tentang">
+  <div class="wrap">
+    <div class="band__inner">
+      <div class="band__cell">
+        <span class="k">01</span>
+        <h3 style="margin-top:var(--sp-3)">Karir</h3>
+        <p>CV, portofolio, dan persiapan wawancara.</p>
+      </div>
+      <div class="band__cell">
+        <span class="k">02</span>
+        <h3 style="margin-top:var(--sp-3)">Skill</h3>
+        <p>Public speaking, MS Office, training &amp; development.</p>
+      </div>
+      <div class="band__cell">
+        <span class="k">03</span>
+        <h3 style="margin-top:var(--sp-3)">AI &amp; teknologi</h3>
+        <p>Prompt, tools, dan desain visual berbasis AI.</p>
+      </div>
+      <div class="band__cell">
+        <span class="k">04</span>
+        <h3 style="margin-top:var(--sp-3)">Dukungan</h3>
+        <p>Guidance, konsultasi, dan pendampingan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LAYANAN ══════════════ -->
+<section class="section" id="layanan">
+  <div class="wrap">
+    <div class="head" data-rv>
+      <div>
+        <span class="eyebrow">Layanan</span>
+        <h2>Pilih satu skill.<br>Naikkan levelmu.</h2>
+      </div>
+      <p>Sembilan layanan terjangkau yang langsung bisa dipakai. Setiap layanan sudah termasuk bimbingan, bukan sekadar file jadi.</p>
+    </div>
+
+    <div class="cards">
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">01</span></div>
+        <h3>CV Berkualitas</h3>
+        <p class="card__desc">Gratis bimbingan plus dua model CV yang siap kamu kirim ke perekrut.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp20.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20CV%20Berkualitas" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">02</span></div>
+        <h3>Portofolio Profesional</h3>
+        <p class="card__desc">Penyusunan portofolio, bimbingan, dan latihan wawancara kerja.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp80.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20Portofolio%20Profesional" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">03</span></div>
+        <h3>Public Speaking Pemula</h3>
+        <p class="card__desc">Dasar public speaking dan komunikasi yang percaya diri.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp50.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20Public%20Speaking%20Pemula" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">04</span></div>
+        <h3>AI Prompt Teks Pemula</h3>
+        <p class="card__desc">Menyusun prompt AI yang efektif untuk kebutuhan sehari-hari.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp50.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20AI%20Prompt%20Teks%20Pemula" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">05</span></div>
+        <h3>Teknologi AI Pemula</h3>
+        <p class="card__desc">Dasar teknologi AI dan cara memanfaatkannya untuk pekerjaan.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp100.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20Teknologi%20AI%20Pemula" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">06</span></div>
+        <h3>Training &amp; Development</h3>
+        <p class="card__desc">Dasar training, learning, dan development untuk dunia kerja.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp50.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20Training%20%26%20Development" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">07</span></div>
+        <h3>MS Office Pemula</h3>
+        <p class="card__desc">Keterampilan Microsoft Office untuk kebutuhan kerja harian.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp30.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20MS.Office%20Pemula" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">08</span></div>
+        <h3>AI Product Photo Design</h3>
+        <p class="card__desc">Desain foto produk menggunakan AI, lengkap dengan konsultasi.</p>
+        <div class="card__foot">
+          <span class="card__price">Rp30.000</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20AI%20Product%20Photo%20Design" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="card" data-rv>
+        <div class="card__top"><span class="card__idx">09</span></div>
+        <h3>Konsultasi Dukungan</h3>
+        <p class="card__desc">Ceritakan kebutuhanmu dulu sebelum memilih layanan apa pun.</p>
+        <div class="card__foot">
+          <span class="card__price is-free">Gratis</span>
+          <a class="card__link" href="https://wa.me/6285196126995?text=Halo%20Zenerasi.id%2C%20saya%20tertarik%20dengan%20layanan%20Konsultasi%20Dukungan" target="_blank" rel="noopener">Pilih <span class="arw">→</span></a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ KEUNGGULAN ══════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="head" data-rv>
+      <div>
+        <span class="eyebrow">Kenapa kami</span>
+        <h2>Lima alasan untuk memulai di sini.</h2>
+      </div>
+      <p>Kami menempatkan arahan di atas produk jadi, supaya kamu tahu langkah berikutnya.</p>
+    </div>
+
+    <div class="rows">
+      <div class="row" data-rv>
+        <span class="row__k">01</span>
+        <h3>Terjangkau</h3>
+        <p>Harga yang ramah untuk Gen Z. Mulai dari Rp20.000, tanpa paket besar berisi hal yang belum tentu kamu butuhkan.</p>
+      </div>
+      <div class="row" data-rv>
+        <span class="row__k">02</span>
+        <h3>Terarah</h3>
+        <p>Bukan hanya hasil akhir, tapi arahan nyata tentang apa yang sebaiknya kamu lakukan setelah layanan selesai.</p>
+      </div>
+      <div class="row" data-rv>
+        <span class="row__k">03</span>
+        <h3>Praktis</h3>
+        <p>Fokus pada kebutuhan dan hasil yang bisa langsung dipakai, bukan teori panjang yang berhenti di catatan.</p>
+      </div>
+      <div class="row" data-rv>
+        <span class="row__k">04</span>
+        <h3>Digital</h3>
+        <p>Skill profesional dipadukan dengan AI dan teknologi yang memang dipakai di lingkungan kerja saat ini.</p>
+      </div>
+      <div class="row" data-rv>
+        <span class="row__k">05</span>
+        <h3>Suportif</h3>
+        <p>Kami mendampingi setiap proses berkembangmu, dari pertanyaan pertama sampai hasil akhirnya.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CARA KERJA ══════════════ -->
+<section class="section" id="cara-kerja">
+  <div class="wrap">
+    <div class="head" data-rv>
+      <div>
+        <span class="eyebrow">Cara kerja</span>
+        <h2>Empat langkah dari niat ke hasil.</h2>
+      </div>
+      <p>Prosesnya sederhana dan bisa dimulai lewat satu pesan WhatsApp.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step" data-rv><div class="step__n">1</div><h3>Pilih</h3><p>Tentukan layanan yang paling sesuai dengan kebutuhanmu.</p></div>
+      <div class="step" data-rv><div class="step__n">2</div><h3>Konsultasi</h3><p>Ceritakan situasimu, kami bantu petakan langkahnya.</p></div>
+      <div class="step" data-rv><div class="step__n">3</div><h3>Kerjakan</h3><p>Proses layanan atau pembelajaran dimulai bersama kami.</p></div>
+      <div class="step" data-rv><div class="step__n">4</div><h3>Grow</h3><p>Gunakan hasilnya untuk melangkah ke ambisi berikutnya.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONI ══════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="head" data-rv>
+      <div>
+        <span class="eyebrow">Testimoni</span>
+        <h2>Mereka sudah mencoba.</h2>
+      </div>
+      <p>Sekarang giliran kamu. Ruang ini menunggu cerita pertamamu.</p>
+    </div>
+
+    <div class="quotes">
+      <!-- PLACEHOLDER — ganti dengan testimoni asli -->
+      <article class="quote" data-rv>
+        <div class="quote__stars">★★★★★</div>
+        <p>Testimoni pelanggan akan tampil di sini.</p>
+        <div class="quote__who"><span class="quote__av">—</span><div><div class="quote__nm">[Nama Pelanggan]</div><div class="quote__sv">[Layanan yang digunakan]</div></div></div>
+      </article>
+      <article class="quote" data-rv>
+        <div class="quote__stars">★★★★★</div>
+        <p>Testimoni pelanggan akan tampil di sini.</p>
+        <div class="quote__who"><span class="quote__av">—</span><div><div class="quote__nm">[Nama Pelanggan]</div><div class="quote__sv">[Layanan yang digunakan]</div></div></div>
+      </article>
+      <article class="quote" data-rv>
+        <div class="quote__stars">★★★★★</div>
+        <p>Testimoni pelanggan akan tampil di sini.</p>
+        <div class="quote__who"><span class="quote__av">—</span><div><div class="quote__nm">[Nama Pelanggan]</div><div class="quote__sv">[Layanan yang digunakan]</div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA PENUTUP ══════════════ -->
+<section class="cta" id="kontak">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <div class="wrap cta__inner">
+    <span class="eyebrow" data-rv>Let's grow together</span>
+    <h2 data-rv>Ambisimu terlalu berharga untuk diam di tempat.</h2>
+    <p class="lede" data-rv>Mulai dari Rp20.000. Mulai dari satu skill. Mulai dari hari ini.</p>
+    <div class="btn-row" data-rv>
+      <a class="btn btn--wa" href="https://wa.me/6285196126995" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.37-.53.05-1.02.24-3.44-.72-2.9-1.14-4.73-4.1-4.87-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.09 1-2.38c.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.17-.3.37-.42.5-.14.14-.29.29-.12.57.16.29.73 1.2 1.56 1.95 1.08.96 1.98 1.26 2.27 1.4.28.14.45.12.62-.07.17-.19.71-.83.9-1.12.19-.29.38-.24.64-.14.26.09 1.66.78 1.95.93.28.14.47.21.54.33.07.12.07.69-.18 1.37z"/></svg>
+        Chat via WhatsApp
+      </a>
+      <a class="btn btn--line" href="https://instagram.com/zenerasi.id" target="_blank" rel="noopener">Follow Instagram</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div>
+        <a class="brand" href="#top"><span class="brand__dot"></span>Zenerasi.id</a>
+        <p class="foot__tag">Pendukung ambisi kamu — platform karir, skill, dan AI untuk Gen Z Indonesia.</p>
+      </div>
+      <div class="foot__col">
+        <h4>Halaman</h4>
+        <a href="#layanan">Layanan</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#cara-kerja">Cara kerja</a>
+      </div>
+      <div class="foot__col">
+        <h4>Terhubung</h4>
+        <a href="https://wa.me/6285196126995" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://instagram.com/zenerasi.id" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>© 2025 Zenerasi.id. Hak cipta dilindungi.</span>
+      <span>Dibuat untuk Gen Z Indonesia.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- ORB: gradasi iridescent dirender di canvas ----------
+   Digambar pada kanvas kecil lalu diperbesar, sehingga transisi warna
+   halus tanpa banding dan tanpa blur CSS yang membuat gambar kotor. */
+(function(){
+  var cv=document.getElementById('orb'); if(!cv) return;
+  var ctx=cv.getContext('2d');
+  var N=190;                      // resolusi internal (kecil = halus saat diperbesar)
+  cv.width=N; cv.height=N;
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var lobes=[
+    {c:[255,122,44],  x:.30,y:.28,r:.52,sx:.055,sy:.042,p:0.0},
+    {c:[255,186,92],  x:.55,y:.20,r:.44,sx:.048,sy:.060,p:1.1},
+    {c:[196,86,226],  x:.74,y:.44,r:.50,sx:.052,sy:.050,p:2.2},
+    {c:[58,110,246],  x:.62,y:.74,r:.54,sx:.060,sy:.045,p:3.3},
+    {c:[40,196,230],  x:.30,y:.70,r:.42,sx:.045,sy:.055,p:4.4},
+    {c:[255,255,255], x:.42,y:.38,r:.22,sx:.040,sy:.038,p:5.5}
+  ];
+
+  function frame(t){
+    var s=reduced?0:t*0.00016;
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='#08080A'; ctx.fillRect(0,0,N,N);
+    ctx.globalCompositeOperation='lighter';
+
+    for(var i=0;i<lobes.length;i++){
+      var L=lobes[i];
+      var x=(L.x+Math.sin(s+L.p)*L.sx)*N;
+      var y=(L.y+Math.cos(s*1.18+L.p)*L.sy)*N;
+      var r=L.r*N*(1+Math.sin(s*1.4+L.p)*0.07);
+      var g=ctx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,   'rgba('+L.c[0]+','+L.c[1]+','+L.c[2]+',0.92)');
+      g.addColorStop(0.45,'rgba('+L.c[0]+','+L.c[1]+','+L.c[2]+',0.34)');
+      g.addColorStop(1,   'rgba('+L.c[0]+','+L.c[1]+','+L.c[2]+',0)');
+      ctx.fillStyle=g; ctx.fillRect(0,0,N,N);
+    }
+
+    /* inti gelap → menyisakan tepi yang menyala seperti gelembung tipis */
+    ctx.globalCompositeOperation='source-over';
+    var cx=N*(0.50+(reduced?0:Math.sin(s*0.9)*0.02));
+    var cy=N*(0.52+(reduced?0:Math.cos(s*0.8)*0.02));
+    var core=ctx.createRadialGradient(cx,cy,0,cx,cy,N*0.50);
+    core.addColorStop(0,   'rgba(6,6,8,0.97)');
+    core.addColorStop(0.58,'rgba(6,6,8,0.86)');
+    core.addColorStop(0.86,'rgba(6,6,8,0.18)');
+    core.addColorStop(1,   'rgba(6,6,8,0)');
+    ctx.fillStyle=core; ctx.fillRect(0,0,N,N);
+
+    if(!reduced) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ---------- NAVIGASI: latar muncul setelah digulir ---------- */
+(function(){
+  var n=document.getElementById('nav');
+  var f=function(){ n.classList.toggle('is-stuck', window.scrollY>24); };
+  window.addEventListener('scroll',f,{passive:true}); f();
+})();
+
+/* ---------- MENU MOBILE ---------- */
+(function(){
+  var b=document.getElementById('burger'), d=document.getElementById('drawer'),
+      c=document.getElementById('drawerClose'), s=document.getElementById('scrim');
+  function open(){d.classList.add('is-open');s.classList.add('is-open');b.setAttribute('aria-expanded','true');}
+  function shut(){d.classList.remove('is-open');s.classList.remove('is-open');b.setAttribute('aria-expanded','false');}
+  b.addEventListener('click',open); c.addEventListener('click',shut); s.addEventListener('click',shut);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') shut(); });
+  d.querySelectorAll('a').forEach(function(a){a.addEventListener('click',shut);});
+})();
+
+/* ---------- REVEAL saat masuk layar ---------- */
+(function(){
+  var els=document.querySelectorAll('[data-rv]');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-in');});return;}
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(x){
+      if(!x.isIntersecting) return;
+      var sib=Array.prototype.indexOf.call(x.target.parentNode.children,x.target);
+      x.target.style.transitionDelay=(Math.min(sib,6)*60)+'ms';
+      x.target.classList.add('is-in'); io.unobserve(x.target);
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+  els.forEach(function(e){io.observe(e);});
+})();
+
+/* ---------- GULIR HALUS ---------- */
+(function(){
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href'); if(id.length<2) return;
+      var t=document.querySelector(id); if(!t) return;
+      e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'});
+      history.replaceState(null,'',id);
+    });
+  });
+})();
+</script>
+</body>
+</html>
